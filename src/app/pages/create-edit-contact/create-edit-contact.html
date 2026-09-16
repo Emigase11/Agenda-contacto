@@ -1,0 +1,21 @@
+<header>
+    <div>
+        <a class="button" routerLink="/contacts">⬅</a>
+        <h1>{{ modoEdicion() ? 'Editar contacto' : 'Nuevo contacto' }}</h1>
+    </div>
+</header>
+<main>
+    <form class="card" (submit)="onSubmit($event)" novalidate>
+        <label for="nombre">Nombre</label>
+        <input type="text" [formField]="formContact.nombre" id="nombre" />
+        <label for="apellido">Apellido</label>
+        <input type="text" [formField]="formContact.apellido" id="apellido"/>
+        <label for="telefono">Numero de telefono</label>
+        <input type="text" [formField]="formContact.numeroTelefono" id="telefono" />
+        <label for="email">Email</label>
+        <input type="email" [formField]="formContact.email" id="email" />
+        <label for="direccion">Dirección</label>
+        <input type="text" [formField]="formContact.direccion" id="direccion" />
+        <button>{{ modoEdicion() ? 'Guardar cambios' : 'Agregar contacto' }}</button>
+    </form>
+</main>

@@ -1,0 +1,38 @@
+:host {
+  display: block;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 32px 16px;
+}
+
+header {
+  margin-bottom: 24px;
+
+  > div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  /* Cada label arranca un bloque nuevo, menos el primero */
+  label + input {
+    margin-bottom: 10px;
+  }
+
+  button {
+    margin-top: 16px;
+  }
+}

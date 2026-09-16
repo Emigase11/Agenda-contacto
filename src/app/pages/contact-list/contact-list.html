@@ -1,0 +1,27 @@
+<header>
+  <h1>Mis contactos</h1>
+  <button class="secundario">Cerrar sesión</button>
+</header>
+<main>
+  @for (contacto of contactsService.contactList(); track contacto.id) {
+  <div class="contacto card">
+    <a [routerLink]="['/contacts',contacto.id]">
+      <span>
+        <img src="img/person.png" alt="Foto del contacto" width="50px">
+      </span>
+      <span>
+        {{contacto.nombre}} {{contacto.apellido}}
+      </span>
+      <span>
+        {{contacto.numeroTelefono}}
+      </span>
+    </a>
+    <div>
+      <a class="button" [routerLink]="['/contacts',contacto.id,'edit']">Editar</a>
+      <button class="danger" (click)="eliminarContacto(contacto.id)">Eliminar</button>
+    </div>
+  </div>
+  }
+  <a class="fab" routerLink="/contacts/create">+</a>
+</main>
+
