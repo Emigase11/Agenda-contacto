@@ -8,14 +8,14 @@
 <main class="card">
   <div>
     <p>Telefono</p> 
-    <p>{{contacto()?.numeroTelefono}}</p>
+    <p>{{contacto()?.numeroTelefono || '—'}}</p>
   </div>
   <div>
     <p>Email</p>
-    <p>{{contacto()?.email}}</p>
+    <p>{{contacto()?.email || '—'}}</p>
   </div>
   <div>
     <p>Dirección</p>
-    <p>{{contacto()?.direccion}}</p>
+    <p>{{contacto()?.direccion || '—'}}</p>
   </div>
 </main>

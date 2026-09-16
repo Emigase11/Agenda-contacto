@@ -17,7 +17,7 @@ section {
 
 /* El register usa .card.chico */
 .card.chico {
-  max-width: 380px;
+  max-width: 400px;
 }
 
 h1 {
@@ -37,25 +37,34 @@ h3 {
 form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
 
   /* El div que agrupa los labels y los inputs */
   > div {
     display: flex;
     flex-direction: column;
     gap: 6px;
+
+    /* Separa un campo del label del siguiente */
+    input + label {
+      margin-top: 10px;
+    }
+  }
+
+  button {
+    padding: 11px 16px;
   }
 }
 
 p {
-  margin: 4px 0 0;
+  margin: 0;
   color: var(--color-muted);
   font-size: 0.875rem;
   text-align: center;
 
   a {
     color: var(--color-primary);
-    font-weight: 500;
+    font-weight: 600;
     text-decoration: none;
 
     &:hover {

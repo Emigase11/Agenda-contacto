@@ -2,7 +2,7 @@
   display: block;
   max-width: 520px;
   margin: 0 auto;
-  padding: 32px 16px;
+  padding: 48px 16px;
 }
 
 header {
@@ -20,6 +20,22 @@ header {
     font-weight: 600;
     letter-spacing: -0.01em;
   }
+
+  /* La flecha de volver, discreta y cuadrada */
+  .button {
+    flex-shrink: 0;
+    width: 36px;
+    padding: 0;
+    border-color: var(--color-border);
+    background-color: transparent;
+    color: var(--color-muted);
+    line-height: 34px;
+
+    &:hover {
+      background-color: var(--color-bg);
+      color: var(--color-text);
+    }
+  }
 }
 
 form {
@@ -27,12 +43,14 @@ form {
   flex-direction: column;
   gap: 6px;
 
-  /* Cada label arranca un bloque nuevo, menos el primero */
+  /* Separa cada input del label del campo siguiente */
   label + input {
-    margin-bottom: 10px;
+    margin-bottom: 14px;
   }
 
   button {
-    margin-top: 16px;
+    width: 100%;
+    margin-top: 10px;
+    padding: 11px 16px;
   }
 }

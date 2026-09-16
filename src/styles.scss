@@ -8,10 +8,17 @@
   --color-muted: #64748b;
   --color-primary: #2563eb;
   --color-primary-hover: #1d4ed8;
+  --color-primary-soft: rgb(37 99 235 / 8%);
   --color-danger: #dc2626;
   --color-danger-hover: #b91c1c;
+  --color-danger-soft: rgb(220 38 38 / 8%);
+
   --radius: 12px;
+  --radius-sm: 8px;
   --shadow: 0 10px 30px rgb(15 23 42 / 8%);
+  --shadow-sm: 0 1px 2px rgb(15 23 42 / 6%);
+  --ring: 0 0 0 3px rgb(37 99 235 / 18%);
+  --transition: 150ms ease;
 }
 
 * {
@@ -29,6 +36,7 @@ body {
   color: var(--color-text);
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Tarjeta: la usan login, register, la lista y el detalle */
@@ -46,7 +54,7 @@ button,
   display: inline-block;
   padding: 10px 16px;
   border: 1px solid transparent;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   background-color: var(--color-primary);
   color: #fff;
   font: inherit;
@@ -55,35 +63,48 @@ button,
   text-align: center;
   text-decoration: none;
   cursor: pointer;
+  transition: background-color var(--transition), border-color var(--transition),
+    color var(--transition);
 
   &:hover {
     background-color: var(--color-primary-hover);
   }
-}
 
-/* Variante roja para acciones destructivas */
-button.danger,
-.button.danger {
-  background-color: var(--color-danger);
-
-  &:hover {
-    background-color: var(--color-danger-hover);
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--ring);
   }
 }
 
-/* Variante gris para acciones secundarias */
+/* Acciones destructivas: contorno rojo que se rellena al pasar el mouse */
+button.danger,
+.button.danger {
+  border-color: var(--color-border);
+  background-color: transparent;
+  color: var(--color-danger);
+
+  &:hover {
+    border-color: var(--color-danger);
+    background-color: var(--color-danger);
+    color: #fff;
+  }
+}
+
+/* Acciones secundarias: contorno gris discreto */
 button.secundario,
 .button.secundario {
-  background-color: transparent;
   border-color: var(--color-border);
+  background-color: transparent;
   color: var(--color-muted);
 
   &:hover {
     background-color: var(--color-bg);
+    color: var(--color-text);
   }
 }
 
 label {
+  color: var(--color-text);
   font-size: 0.875rem;
   font-weight: 600;
 }
@@ -92,14 +113,19 @@ input {
   width: 100%;
   padding: 10px 12px;
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   background-color: var(--color-surface);
   color: inherit;
   font: inherit;
+  transition: border-color var(--transition), box-shadow var(--transition);
+
+  &::placeholder {
+    color: var(--color-muted);
+  }
 
   &:focus {
     outline: none;
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgb(37 99 235 / 18%);
+    box-shadow: var(--ring);
   }
 }
