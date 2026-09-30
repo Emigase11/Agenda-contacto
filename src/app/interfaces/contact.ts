@@ -1,9 +1,17 @@
+/// Espeja el ContactDto de la API:
+/// ContactDto(int Id, string FirstName, string LastName, string? Address,
+///            string? Number, string? Email, string? Image, string? Company,
+///            string Description, int UserId, bool IsFavorite)
 export interface Contact {
-    id: string
-    nombre: string
-    apellido: string
-    numeroTelefono: string
-    direccion?: string
+    id: number
+    firstName: string
+    lastName: string
+    address?: string
+    number?: string
     email?: string
-    imgUrl?: string
+    image?: string
+    company?: string
+    description: string
+    userId: number
+    isFavorite: boolean
 }

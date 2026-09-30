@@ -1,14 +1,14 @@
 <header>
   <div>
     <a class="button" routerLink="/contacts">⬅</a>
-    <h1>{{contacto()?.nombre}}</h1>
+    <h1>{{contacto()?.firstName}}</h1>
   </div>
   <button class="secundario">Cerrar sesión</button>
 </header>
 <main class="card">
   <div>
     <p>Telefono</p> 
-    <p>{{contacto()?.numeroTelefono || '—'}}</p>
+    <p>{{contacto()?.number || '—'}}</p>
   </div>
   <div>
     <p>Email</p>
@@ -16,6 +16,6 @@
   </div>
   <div>
     <p>Dirección</p>
-    <p>{{contacto()?.direccion || '—'}}</p>
+    <p>{{contacto()?.address || '—'}}</p>
   </div>
 </main>

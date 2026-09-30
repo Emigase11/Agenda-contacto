@@ -10,9 +10,11 @@ import { RouterLink } from '@angular/router';
 })
 export class ContactDetails {
 
+  /// El parámetro de ruta siempre llega como string, pero el id del contacto
+  /// es un int en la API
   id = input.required<string>();
   contactsService = inject(ContactsService);
 
-  contacto = computed(() => this.contactsService.getContactById(this.id()));
+  contacto = computed(() => this.contactsService.getContactById(Number(this.id())));
 
 }

@@ -3,19 +3,37 @@
         <a class="button" routerLink="/contacts">⬅</a>
         <h1>{{ modoEdicion() ? 'Editar contacto' : 'Nuevo contacto' }}</h1>
     </div>
+    <p>
+        {{ modoEdicion()
+            ? 'Modificá los datos y guardá los cambios.'
+            : 'Completá los datos del nuevo contacto.' }}
+    </p>
 </header>
 <main>
     <form class="card" (submit)="onSubmit($event)" novalidate>
-        <label for="nombre">Nombre</label>
-        <input type="text" [formField]="formContact.nombre" id="nombre" />
-        <label for="apellido">Apellido</label>
-        <input type="text" [formField]="formContact.apellido" id="apellido"/>
-        <label for="telefono">Numero de telefono</label>
-        <input type="text" [formField]="formContact.numeroTelefono" id="telefono" />
-        <label for="email">Email</label>
-        <input type="email" [formField]="formContact.email" id="email" />
-        <label for="direccion">Dirección</label>
-        <input type="text" [formField]="formContact.direccion" id="direccion" />
-        <button>{{ modoEdicion() ? 'Guardar cambios' : 'Agregar contacto' }}</button>
+        <div class="campo">
+            <label for="firstName">Nombre</label>
+            <input type="text" [formField]="formContact.firstName" id="firstName" />
+        </div>
+        <div class="campo">
+            <label for="lastName">Apellido</label>
+            <input type="text" [formField]="formContact.lastName" id="lastName"/>
+        </div>
+        <div class="campo">
+            <label for="number">Numero de telefono</label>
+            <input type="text" [formField]="formContact.number" id="number" />
+        </div>
+        <div class="campo">
+            <label for="email">Email</label>
+            <input type="email" [formField]="formContact.email" id="email" />
+        </div>
+        <div class="campo ancho">
+            <label for="address">Dirección</label>
+            <input type="text" [formField]="formContact.address" id="address" />
+        </div>
+        <div class="acciones">
+            <a class="button secundario" routerLink="/contacts">Cancelar</a>
+            <button>{{ modoEdicion() ? 'Guardar cambios' : 'Agregar contacto' }}</button>
+        </div>
     </form>
 </main>

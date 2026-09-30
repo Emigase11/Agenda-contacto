@@ -10,10 +10,10 @@
         <img src="img/person.png" alt="Foto del contacto" width="50px">
       </span>
       <span>
-        {{contacto.nombre}} {{contacto.apellido}}
+        {{contacto.firstName}} {{contacto.lastName}}
       </span>
       <span>
-        {{contacto.numeroTelefono}}
+        {{contacto.number}}
       </span>
     </a>
     <div>
@@ -22,6 +22,5 @@
     </div>
   </div>
   }
-  <a class="fab" routerLink="/contacts/create">+</a>
+  <a class="fab" routerLink="/contacts/create" aria-label="Agregar contacto" data-titulo="Agregar contacto">+</a>
 </main>
-

@@ -13,7 +13,7 @@ export class ContactList {
 
   contactsService = inject(ContactsService);
 
-  eliminarContacto(id:string){
+  eliminarContacto(id: number){
     this.contactsService.deleteContact(id);
     Swal.mixin({
       toast: true,
