@@ -1,9 +1,9 @@
 <header>
   <h1>Mis contactos</h1>
-  <button class="secundario">Cerrar sesión</button>
+  <button (click)="authService.logout()">Cerrar sesión</button>
 </header>
 <main>
-  @for (contacto of contactsService.contactList(); track contacto.id) {
+  @for (contacto of contactsService.contactList(); track $index) {
   <div class="contacto card">
     <a [routerLink]="['/contacts',contacto.id]">
       <span>
@@ -18,9 +18,10 @@
     </a>
     <div>
       <a class="button" [routerLink]="['/contacts',contacto.id,'edit']">Editar</a>
-      <button class="danger" (click)="eliminarContacto(contacto.id)">Eliminar</button>
+      <button (click)="eliminarContacto(contacto.id)">Eliminar</button>
     </div>
   </div>
   }
-  <a class="fab" routerLink="/contacts/create" aria-label="Agregar contacto" data-titulo="Agregar contacto">+</a>
+  <a class="fab" routerLink="/contacts/create">+</a>
 </main>
+

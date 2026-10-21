@@ -1,106 +1,61 @@
-import { Service, signal } from '@angular/core';
+import { inject, Service, signal } from '@angular/core';
 import { Contact } from '../interfaces/contact';
+import { Auth } from './auth';
 
 @Service()
 export class ContactsService {
 
-  contactList = signal<Contact[]>([
-    {
-      id: 1,
-      firstName: 'Ana',
-      lastName: 'Gómez',
-      address: 'Av. Corrientes 1234, CABA',
-      number: '+54 11 4567-8901',
-      email: 'ana.gomez@example.com',
-      company: 'Estudio Gómez & Asoc.',
-      description: 'Contadora del estudio, contacto para facturación.',
-      userId: 1,
-      isFavorite: false
+authService = inject(Auth);
+
+readonly contactList = signal<Contact[]>([]);
+
+
+agregarContacto(nuevoContacto:Contact){
+  // const nuevoId = this.contactList.length;
+  // this.contactList.push({
+  //   id: nuevoId,
+  //   firstName: nuevoContacto.firstName,
+  //   lastName: nuevoContacto.lastName,
+  //   number: nuevoContacto.number,
+  //   isFavorite: false,
+  //   groupIds: []
+  // })
+  // return nuevoId;
+  // console.log(this.contactList)
+}
+
+async getContacts():Promise<Contact[]>{
+  const res = await fetch("http://localhost:5000/api/contacts",{
+    method: "GET",
+    headers: {
+        Authorization: "Bearer "+this.authService.token
     },
-    {
-      id: 2,
-      firstName: 'Bruno',
-      lastName: 'Fernández',
-      address: 'Calle Falsa 123, Rosario',
-      number: '+54 11 4789-2345',
-      email: 'bruno.fernandez@example.com',
-      company: 'Logística del Litoral',
-      description: 'Responsable de envíos al interior.',
-      userId: 1,
-      isFavorite: false
-    },
-    {
-      id: 3,
-      firstName: 'Carla',
-      lastName: 'Ruiz',
-      address: 'Bv. San Juan 456, Córdoba',
-      number: '+54 351 622-1187',
-      email: 'carla.ruiz@example.com',
-      company: 'Nube Sur',
-      description: 'Diseñadora UX, trabaja en el rediseño del sitio.',
-      userId: 1,
-      isFavorite: false
-    },
-    {
-      id: 4,
-      firstName: 'Diego',
-      lastName: 'Martínez',
-      address: 'Av. Las Heras 789, Mendoza',
-      number: '+54 261 415-9032',
-      email: 'diego.martinez@example.com',
-      company: 'Andes Software',
-      description: 'Desarrollador backend, referente de la API.',
-      userId: 1,
-      isFavorite: false
-    },
-    {
-      id: 5,
-      firstName: 'Elena',
-      lastName: 'Sosa',
-      address: 'Calle 7 N° 1020, La Plata',
-      number: '+54 221 483-5566',
-      email: 'elena.sosa@example.com',
-      company: 'Municipalidad de La Plata',
-      description: 'Contacto administrativo para trámites.',
-      userId: 1,
-      isFavorite: false
-    }
-  ]);
+    
+  })
+  if (!res.ok) return [];
+  const contactos = await res.json()
+  this.contactList.set(contactos);
+  console.log(this.contactList)
 
-  agregarContacto(nuevoContacto: Contact) {
-    const nuevoId = this.generarId();
-    this.contactList.update((contactos) => [
-      ...contactos,
-      { ...nuevoContacto, id: nuevoId }
-    ]);
-    return nuevoId;
-  }
+  return contactos;
+}
 
-  /// Busca un contacto desde un ID
-  getContactById(id: number) {
-    const contactoEncontrado = this.contactList().find(contact => contact.id === id);
-    return contactoEncontrado;
-  }
+// Busca un contacto desde un ID
+getContactById(id:number){
+  //const contactoEncontrado = this.contactList.find(contact => contact.id === id);
+  //return contactoEncontrado;
+}
 
-  editarContacto(id: number, datos: Contact) {
-    this.contactList.update((contactos) =>
-      contactos.map((contacto) =>
-        contacto.id === id ? { ...datos, id } : contacto
-      )
-    );
-  }
+deleteContact(id:number){
+  //this.contactList = this.contactList.filter(c => c.id !== id);
+}
 
-  deleteContact(id: number) {
-    this.contactList.update((contactos) => contactos.filter(c => c.id !== id));
-  }
+editContact(contact:Contact){
+  //this.contactList = this.contactList.map(c => {
+  //  if(c.id === contact.id) return contact;
+  //  return c
+  //});
+}
 
-  /// Genera un id que no esté usado por ningún contacto
-  private generarId() {
-    let numero = this.contactList().length + 1;
-    while (this.contactList().some(contacto => contacto.id === numero)) {
-      numero++;
-    }
-    return numero;
-  }
 
 }

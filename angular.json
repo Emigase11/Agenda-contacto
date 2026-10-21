@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "Agenda-contacto": {
+    "Agenda-tup-2026": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -22,7 +22,6 @@
           "options": {
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
-            "allowedCommonJsDependencies": ["sweetalert2"],
             "inlineStyleLanguage": "scss",
             "assets": [
               {
@@ -62,10 +61,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "Agenda-contacto:build:production"
+              "buildTarget": "Agenda-tup-2026:build:production"
             },
             "development": {
-              "buildTarget": "Agenda-contacto:build:development"
+              "buildTarget": "Agenda-tup-2026:build:development"
             }
           },
           "defaultConfiguration": "development"

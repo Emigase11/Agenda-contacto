@@ -31,7 +31,7 @@ export const routes: Routes = [
         component: CreateEditContact
     },
     {
-        path: "*",
+        path: "",
         redirectTo: "contacts",
         pathMatch: "full"
     }

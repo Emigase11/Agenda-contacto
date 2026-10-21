@@ -1,77 +1,61 @@
-import { Component, computed, inject, input, linkedSignal } from '@angular/core';
+import { Component, effect, inject, input, OnInit, signal } from '@angular/core';
 import { Contact } from '../../interfaces/contact';
 import { form, FormField } from '@angular/forms/signals';
 import { ContactsService } from '../../services/contactsService';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-
-/// Como varios campos son opcionales en Contact, el formulario usa su propia
-/// versión con todos obligatorios: Signal Forms no puede bindear un input a un
-/// campo que pueda ser undefined.
-type ContactFormModel = Required<Contact>;
-
-/// Mientras no haya login, los contactos nuevos se crean para este usuario
-const USER_ID_POR_DEFECTO = 1;
+import { Auth } from '../../services/auth';
 
 @Component({
-  imports: [FormField, RouterLink],
+  imports: [FormField],
   selector: 'app-create-edit-contact',
   styleUrl: './create-edit-contact.scss',
   templateUrl: './create-edit-contact.html',
 })
-export class CreateEditContact {
+export class CreateEditContact implements OnInit{
+  ngOnInit(): void {
+    if(this.id()){
+      const contacto = this.contactsService.getContactById(this.id()!);
+      // if(contacto) {
+      //   this.newContactModel.set(contacto)
+      // }
+    }
+  }
 
+  authService = inject(Auth);
   contactsService = inject(ContactsService);
-  router = inject(Router);
+  router = inject(Router)
 
-  /// Llega solo en la ruta contacts/:id/edit, y siempre como string
-  id = input<string>();
-
-  modoEdicion = computed(() => this.id() !== undefined);
-
-  private contactoAEditar = computed(() => {
-    const id = this.id();
-    return id === undefined ? undefined : this.contactsService.getContactById(Number(id));
+  newContactModel = signal<Contact>({
+    id: 0,
+    firstName: '',
+    lastName: '',
+    number: '',
+    isFavorite: false,
+    groupIds: []
   });
 
-  contactModel = linkedSignal<ContactFormModel>(() => {
-    const contacto = this.contactoAEditar();
-    return {
-      id: contacto?.id ?? 0,
-      firstName: contacto?.firstName ?? '',
-      lastName: contacto?.lastName ?? '',
-      address: contacto?.address ?? '',
-      number: contacto?.number ?? '',
-      email: contacto?.email ?? '',
-      image: contacto?.image ?? '',
-      company: contacto?.company ?? '',
-      description: contacto?.description ?? '',
-      userId: contacto?.userId ?? USER_ID_POR_DEFECTO,
-      isFavorite: contacto?.isFavorite ?? false
-    };
-  });
+  id = input<number>();
 
-  formContact = form(this.contactModel);
+  // mostrarForm = effect(() => console.log(this.newContactModel()))
+
+  formCreateContact = form(this.newContactModel);
 
   onSubmit(event: Event) {
     event.preventDefault();
 
-    const idContacto = this.modoEdicion()
-      ? this.editar()
-      : this.contactsService.agregarContacto(this.contactModel());
-
-    this.mostrarToast(this.modoEdicion() ? "Contacto editado" : "Contacto creado");
-
-    this.router.navigate(['/contacts', idContacto]);
+    //Editar
+    if(this.id()){
+      this.editarContacto()
+    } else {
+      this.crearContacto()
+    }
+    
   }
 
-  private editar() {
-    const id = Number(this.id());
-    this.contactsService.editarContacto(id, this.contactModel());
-    return id;
-  }
+  crearContacto(){
+    const idContactoCreado = this.contactsService.agregarContacto(this.newContactModel());
 
-  private mostrarToast(titulo: string) {
     Swal.mixin({
       toast: true,
       position: "top-end",
@@ -85,8 +69,32 @@ export class CreateEditContact {
       }
     }).fire({
       icon: "success",
-      title: titulo
+      title: "Contacto creado"
     });
+
+    this.router.navigate(['/contacts',idContactoCreado])
+  }
+
+  editarContacto(){
+    this.contactsService.editContact(this.newContactModel())
+
+    Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 2000,
+      theme: 'dark',
+      timerProgressBar: false,
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    }).fire({
+      icon: "success",
+      title: "Contacto editado"
+    });
+
+    this.router.navigate(['/contacts',this.newContactModel().id])
   }
 
 }

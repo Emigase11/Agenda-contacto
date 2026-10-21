@@ -1,69 +1,47 @@
-:host {
-  display: block;
+$gap: 10px;
+
+h1{
+  font-size: 2rem;
+  margin-bottom: 1rem;
 }
 
-section {
+h3{
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+section{
+  margin: auto;
+  text-align: center;
+  height: 90vh;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
-  min-height: 100vh;
-  padding: 48px 16px;
+}
+
+form{
+  display: flex;
+  flex-direction: column;
+  gap: $gap;
+  button{
+    margin: auto;
+  }
+}
+
+form>div{
+  max-width: 400px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $gap; 
+  text-align: right;
 }
 
 .card {
-  width: 100%;
-  max-width: 420px;
+  margin: auto;
 }
 
-h1 {
-  margin: 0 0 4px;
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-
-h3 {
-  margin: 0 0 24px;
-  color: var(--color-muted);
-  font-size: 0.9rem;
-  font-weight: 400;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-
-  /* El div que agrupa los labels y los inputs */
-  > div {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-
-    /* Separa un campo del label del siguiente */
-    input + label {
-      margin-top: 10px;
-    }
-  }
-
-  button {
-    padding: 11px 16px;
-  }
-}
-
-p {
-  margin: 0;
-  color: var(--color-muted);
-  font-size: 0.875rem;
-  text-align: center;
-
-  a {
-    color: var(--color-primary);
-    font-weight: 600;
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
+a{
+  font-weight: bold;
+  text-decoration: underline;
 }

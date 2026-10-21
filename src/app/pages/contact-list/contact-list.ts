@@ -1,7 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from "@angular/router";
 import { ContactsService } from '../../services/contactsService';
 import Swal from 'sweetalert2'
+import { Auth } from '../../services/auth';
 
 @Component({
   imports: [RouterLink],
@@ -9,11 +10,16 @@ import Swal from 'sweetalert2'
   styleUrl: './contact-list.scss',
   templateUrl: './contact-list.html',
 })
-export class ContactList {
-
+export class ContactList implements OnInit {
+  
   contactsService = inject(ContactsService);
+  authService = inject(Auth);
 
-  eliminarContacto(id: number){
+  ngOnInit(): void {
+    this.contactsService.getContacts()
+  }
+  
+  eliminarContacto(id:number){
     this.contactsService.deleteContact(id);
     Swal.mixin({
       toast: true,

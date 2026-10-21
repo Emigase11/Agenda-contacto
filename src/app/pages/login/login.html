@@ -2,14 +2,14 @@
    <div class="card">  
        <h1>Agenda de contactos</h1>
        <h3>Iniciar sesión</h3>
-       <form>
+       <form (submit)="login($event)">
            <div>
                <label for="">Email</label>
-               <input type="email" name="" id="">
+               <input type="email" id="" [formField]="formLogin.email">
                <label for="">Password</label>
-               <input type="password" name="" id="">
+               <input type="password" id="" [formField]="formLogin.password">
             </div>
-            <button>Iniciar sesión</button>
+            <button [disabled]="formLogin().invalid()">Iniciar sesión</button>
             <p>¿No tenés cuenta? <a routerLink="/register">Registrate</a></p>
         </form>
     </div>
