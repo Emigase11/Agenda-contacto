@@ -13,12 +13,12 @@ import { Auth } from '../../services/auth';
   templateUrl: './create-edit-contact.html',
 })
 export class CreateEditContact implements OnInit{
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     if(this.id()){
-      const contacto = this.contactsService.getContactById(this.id()!);
-      // if(contacto) {
-      //   this.newContactModel.set(contacto)
-      // }
+      const contacto = await this.contactsService.getContactById(this.id()!);
+      if(contacto) {
+        this.newContactModel.set(contacto)
+      }
     }
   }
 

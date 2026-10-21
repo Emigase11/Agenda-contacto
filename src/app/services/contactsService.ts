@@ -10,18 +10,23 @@ authService = inject(Auth);
 readonly contactList = signal<Contact[]>([]);
 
 
-agregarContacto(nuevoContacto:Contact){
-  // const nuevoId = this.contactList.length;
-  // this.contactList.push({
-  //   id: nuevoId,
-  //   firstName: nuevoContacto.firstName,
-  //   lastName: nuevoContacto.lastName,
-  //   number: nuevoContacto.number,
-  //   isFavorite: false,
-  //   groupIds: []
-  // })
-  // return nuevoId;
-  // console.log(this.contactList)
+  async agregarContacto(nuevoContacto:Contact){
+
+const res = await fetch("http://localhost:5000/api/contacts",{
+    method: "POST",
+    headers: {
+        "content-type" : "application/json",
+        "authorization": "Bearer "+this.authService.token
+    },
+    body : JSON.stringify(nuevoContacto)
+  })
+  if(!res.ok) return false;
+
+  const nuevoContactoBack = await res.json();
+  this.contactList.update(value => [...value,nuevoContactoBack])
+  return res.ok
+
+
 }
 
 async getContacts():Promise<Contact[]>{
@@ -41,20 +46,51 @@ async getContacts():Promise<Contact[]>{
 }
 
 // Busca un contacto desde un ID
-getContactById(id:number){
-  //const contactoEncontrado = this.contactList.find(contact => contact.id === id);
-  //return contactoEncontrado;
+  async getContactById(id:number){
+  const res = await fetch("http://localhost:5000/api/contacts/"+id,{
+    method: "GET",
+    headers: {
+        Authorization: "Bearer "+this.authService.token
+    },
+  })
+  if (!res.ok) return null;
+  const contacto = await res.json()
+  return contacto;
 }
 
-deleteContact(id:number){
-  //this.contactList = this.contactList.filter(c => c.id !== id);
+  async deleteContact(id:number){
+  const res = await fetch("http://localhost:5000/api/contacts/"+id,{
+    method: "DELETE",
+    headers: {
+        "content-type" : "application/json",
+        "authorization": "Bearer "+this.authService.token
+    },
+  })
+  if(!res.ok) return false;
+  this.contactList.update(value => value.filter(c => c.id !== id))
+  return true;
 }
 
-editContact(contact:Contact){
-  //this.contactList = this.contactList.map(c => {
-  //  if(c.id === contact.id) return contact;
-  //  return c
-  //});
+  async editContact(contact:Contact){
+  const res = await fetch("http://localhost:5000/api/contacts/"+contact.id,{
+    method: "PUT",
+    headers: {
+        "content-type" : "application/json",
+        "authorization": "Bearer "+this.authService.token
+    },
+    body : JSON.stringify(contact)
+  })
+  if(!res.ok) return false;
+
+  const nuevoContactoBack = await res.json();
+  this.contactList.update(value => {
+    return value.map(c => {
+      if(c.id === nuevoContactoBack.id) return contact;
+      return c
+    });
+  })
+  return res.ok
+
 }
 
 
