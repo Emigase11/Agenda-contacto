@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { RouterLink } from "@angular/router";
 import { ContactsService } from '../../services/contactsService';
 import Swal from 'sweetalert2'
@@ -14,6 +14,11 @@ export class ContactList implements OnInit {
   
   contactsService = inject(ContactsService);
   authService = inject(Auth);
+
+  // Favoritos primero
+  contactosOrdenados = computed(() =>
+    [...this.contactsService.contactList()].sort((a, b) => Number(b.isFavorite) - Number(a.isFavorite))
+  );
 
   ngOnInit(): void {
     this.contactsService.getContacts()

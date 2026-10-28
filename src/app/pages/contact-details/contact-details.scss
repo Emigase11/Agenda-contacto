@@ -1,5 +1,96 @@
-.card>div{
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: 100px 1fr;
+@use "../app-ui" as ui;
+
+.perfil {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+  }
+}
+
+.favorito {
+  border-radius: 999px;
+
+  span {
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  &.activo {
+    background-color: #fff4d6;
+    color: #7a5600;
+
+    &:hover {
+      background-color: #ffe9ad;
+    }
+  }
+}
+
+.avatar.grande {
+  width: 88px;
+  font-size: 2rem;
+}
+
+.datos {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 0 1.5rem;
+
+  > div {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 1rem;
+    padding: 12px 14px;
+    border: 1px solid rgba(105, 105, 105, 0.25);
+    border-radius: 10px;
+  }
+
+  dt {
+    color: ui.$gris-texto;
+    font-size: 14px;
+  }
+
+  dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+
+    a {
+      color: ui.$azul-fuerte;
+      text-decoration: underline;
+    }
+  }
+
+  .descripcion {
+    white-space: pre-line;
+  }
+}
+
+.acciones {
+  display: flex;
+  gap: 10px;
+
+  .btn {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+  }
+}
+
+.cargando {
+  color: ui.$gris-texto;
+  text-align: center;
+}
+
+@media (max-width: 520px) {
+  .datos > div {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
 }

@@ -1,0 +1,170 @@
+// Estilos compartidos por todas las pantallas (mismo estilo que login/register)
+$azul: royalblue;
+$azul-fuerte: rgb(56, 90, 194);
+$azul-suave: #eef2fd;
+$azul-suave-hover: #dbe4fb;
+$gris-texto: #595959;
+$rojo: #b71c1c;
+$rojo-suave: #fdecec;
+$rojo-suave-hover: #f9d4d4;
+$texto: #1d1d1d;
+
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  &,
+  * {
+    box-sizing: border-box;
+  }
+
+  main {
+    width: 100%;
+  }
+}
+
+.panel {
+  background-color: #fff;
+  color: $texto;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background-color: #fff;
+  color: $texto;
+  border-radius: 20px;
+  padding: 14px 20px;
+
+  > div {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
+  }
+}
+
+.title {
+  font-size: 28px;
+  color: $azul;
+  font-weight: 600;
+  letter-spacing: -1px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+
+  &::before,
+  &::after {
+    position: absolute;
+    content: "";
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    left: 0;
+    background-color: $azul;
+  }
+
+  &::after {
+    animation: pulse 1s linear infinite;
+  }
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  background-color: $azul;
+  color: #fff;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: $azul-fuerte;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $azul-fuerte;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    background-color: #8a8a8a;
+    color: #fff;
+    cursor: not-allowed;
+  }
+}
+
+.btn-ghost {
+  background-color: $azul-suave;
+  color: $azul-fuerte;
+
+  &:hover {
+    background-color: $azul-suave-hover;
+  }
+}
+
+.btn-danger {
+  background-color: $rojo-suave;
+  color: $rojo;
+
+  &:hover {
+    background-color: $rojo-suave-hover;
+  }
+}
+
+.btn-icon {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 18px;
+}
+
+.avatar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background-color: $azul-suave;
+  color: $azul-fuerte;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(0.9);
+    opacity: 1;
+  }
+
+  to {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .title::after {
+    animation: none;
+  }
+}

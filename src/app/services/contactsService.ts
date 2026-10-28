@@ -10,7 +10,7 @@ authService = inject(Auth);
 readonly contactList = signal<Contact[]>([]);
 
 
-  async agregarContacto(nuevoContacto:Contact){
+  async agregarContacto(nuevoContacto:Contact):Promise<Contact | null>{
 
 const res = await fetch("http://localhost:5000/api/contacts",{
     method: "POST",
@@ -20,11 +20,11 @@ const res = await fetch("http://localhost:5000/api/contacts",{
     },
     body : JSON.stringify(nuevoContacto)
   })
-  if(!res.ok) return false;
+  if(!res.ok) return null;
 
-  const nuevoContactoBack = await res.json();
+  const nuevoContactoBack:Contact = await res.json();
   this.contactList.update(value => [...value,nuevoContactoBack])
-  return res.ok
+  return nuevoContactoBack;
 
 
 }
@@ -82,15 +82,23 @@ async getContacts():Promise<Contact[]>{
   })
   if(!res.ok) return false;
 
-  const nuevoContactoBack = await res.json();
-  this.contactList.update(value => {
-    return value.map(c => {
-      if(c.id === nuevoContactoBack.id) return contact;
-      return c
-    });
-  })
-  return res.ok
+  // El PUT devuelve 204 (sin body), así que actualizamos la lista con lo que mandamos
+  this.contactList.update(value => value.map(c => c.id === contact.id ? contact : c))
+  return true;
 
+}
+
+// El back no guarda isFavorite al crear/editar: hay que usar este endpoint, que invierte el estado
+  async toggleFavorite(id:number){
+  const res = await fetch("http://localhost:5000/api/contacts/"+id+"/favorite",{
+    method: "POST",
+    headers: {
+        "authorization": "Bearer "+this.authService.token
+    },
+  })
+  if(!res.ok) return false;
+  this.contactList.update(value => value.map(c => c.id === id ? {...c, isFavorite: !c.isFavorite} : c))
+  return true;
 }
 
 

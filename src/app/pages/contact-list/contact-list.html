@@ -1,27 +1,41 @@
-<header>
-  <h1>Mis contactos</h1>
-  <button (click)="authService.logout()">Cerrar sesión</button>
-</header>
-<main>
-  @for (contacto of contactsService.contactList(); track $index) {
-  <div class="contacto card">
-    <a [routerLink]="['/contacts',contacto.id]">
-      <span>
-        <img src="img/person.png" alt="Foto del contacto" width="50px">
-      </span>
-      <span>
-        {{contacto.firstName}} {{contacto.lastName}}
-      </span>
-      <span>
-        {{contacto.number}}
-      </span>
-    </a>
-    <div>
-      <a class="button" [routerLink]="['/contacts',contacto.id,'edit']">Editar</a>
-      <button (click)="eliminarContacto(contacto.id)">Eliminar</button>
-    </div>
-  </div>
-  }
-  <a class="fab" routerLink="/contacts/create">+</a>
-</main>
-
+<div class="page">
+  <header class="topbar">
+    <h1 class="title">Mis contactos</h1>
+    <button class="btn btn-ghost" (click)="authService.logout()">Cerrar sesión</button>
+  </header>
+  <main>
+    @if (contactsService.contactList().length) {
+      <ul class="lista">
+        @for (contacto of contactosOrdenados(); track contacto.id) {
+          <li class="contacto">
+            <a class="contacto-link" [routerLink]="['/contacts', contacto.id]">
+              <span class="avatar" aria-hidden="true">{{ contacto.firstName[0] }}{{ contacto.lastName[0] }}</span>
+              <span class="datos">
+                <span class="nombre">{{ contacto.firstName }} {{ contacto.lastName }}</span>
+                <span class="numero">
+                  {{ contacto.number || 'Sin teléfono' }}@if (contacto.company) { · {{ contacto.company }} }
+                </span>
+              </span>
+            </a>
+            <div class="acciones">
+              <button class="btn btn-ghost btn-icon favorito" [class.activo]="contacto.isFavorite"
+                [attr.aria-pressed]="contacto.isFavorite"
+                [attr.aria-label]="'Favorito: ' + contacto.firstName + ' ' + contacto.lastName"
+                (click)="contactsService.toggleFavorite(contacto.id)">{{ contacto.isFavorite ? '★' : '☆' }}</button>
+              <a class="btn btn-ghost" [routerLink]="['/contacts', contacto.id, 'edit']"
+                [attr.aria-label]="'Editar a ' + contacto.firstName + ' ' + contacto.lastName">Editar</a>
+              <button class="btn btn-danger" (click)="eliminarContacto(contacto.id)"
+                [attr.aria-label]="'Eliminar a ' + contacto.firstName + ' ' + contacto.lastName">Eliminar</button>
+            </div>
+          </li>
+        }
+      </ul>
+    } @else {
+      <div class="panel vacio">
+        <p>Todavía no tenés contactos.</p>
+        <a class="btn" routerLink="/contacts/create">Agregar el primero</a>
+      </div>
+    }
+  </main>
+  <a class="fab" routerLink="/contacts/create" aria-label="Agregar contacto">+</a>
+</div>

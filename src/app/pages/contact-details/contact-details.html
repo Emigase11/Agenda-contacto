@@ -1,27 +1,49 @@
-<header>
-  <div>
-    <a class="button" routerLink="/contacts">⬅</a>
-    <h1>{{contacto()?.firstName}} {{contacto()?.lastName}}</h1>
-  </div>
-  <button>Cerrar sesión</button>
-</header>
-<main class="card">
-  <div>
-    <p>Telefono</p>
-    <p>{{contacto()?.number}}</p>
-  </div>
-  <div>
-    <p>Email</p>
-    <p>{{contacto()?.email}}</p>
-  </div>
-  <div>
-    <p>Dirección</p>
-    <p>{{contacto()?.address}}</p>
-  </div>
-  @if(contacto()){
+<div class="page">
+  <header class="topbar">
     <div>
-      <a class="button" [routerLink]="['/contacts',contacto()?.id,'edit']">Editar</a>
-      <button (click)="eliminarContacto(contacto()!.id)">Eliminar</button>
+      <a class="btn btn-ghost btn-icon" routerLink="/contacts" aria-label="Volver a mis contactos">←</a>
+      <h1 class="title">Contacto</h1>
     </div>
-  }
-</main>
+    <button class="btn btn-ghost" (click)="authService.logout()">Cerrar sesión</button>
+  </header>
+  <main class="panel">
+    @if (contacto(); as c) {
+      <div class="perfil">
+        <span class="avatar grande" aria-hidden="true">{{ c.firstName[0] }}{{ c.lastName[0] }}</span>
+        <h2>{{ c.firstName }} {{ c.lastName }}</h2>
+        <button class="btn btn-ghost favorito" [class.activo]="c.isFavorite"
+          [attr.aria-pressed]="c.isFavorite" (click)="toggleFavorito(c.id)">
+          <span aria-hidden="true">{{ c.isFavorite ? '★' : '☆' }}</span> Favorito
+        </button>
+      </div>
+      <dl class="datos">
+        <div>
+          <dt>Teléfono</dt>
+          <dd>
+            @if (c.number) { <a [href]="'tel:' + c.number">{{ c.number }}</a> } @else { — }
+          </dd>
+        </div>
+        <div>
+          <dt>Empresa</dt>
+          <dd>{{ c.company || '—' }}</dd>
+        </div>
+        <div>
+          <dt>Email</dt>
+          <dd>
+            @if (c.email) { <a [href]="'mailto:' + c.email">{{ c.email }}</a> } @else { — }
+          </dd>
+        </div>
+        <div>
+          <dt>Descripción</dt>
+          <dd class="descripcion">{{ c.description || '—' }}</dd>
+        </div>
+      </dl>
+      <div class="acciones">
+        <a class="btn" [routerLink]="['/contacts', c.id, 'edit']">Editar</a>
+        <button class="btn btn-danger" (click)="eliminarContacto(c.id)">Eliminar</button>
+      </div>
+    } @else {
+      <p class="cargando">Cargando contacto…</p>
+    }
+  </main>
+</div>

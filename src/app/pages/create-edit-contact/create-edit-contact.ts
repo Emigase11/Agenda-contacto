@@ -1,13 +1,13 @@
-import { Component, effect, inject, input, OnInit, signal } from '@angular/core';
+import { Component, inject, input, OnInit, signal } from '@angular/core';
 import { Contact } from '../../interfaces/contact';
-import { form, FormField } from '@angular/forms/signals';
+import { email, form, FormField, required } from '@angular/forms/signals';
 import { ContactsService } from '../../services/contactsService';
-import { Router } from '@angular/router';
-import Swal from 'sweetalert2';
+import { Router, RouterLink } from '@angular/router';
+import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { Auth } from '../../services/auth';
 
 @Component({
-  imports: [FormField],
+  imports: [FormField, RouterLink],
   selector: 'app-create-edit-contact',
   styleUrl: './create-edit-contact.scss',
   templateUrl: './create-edit-contact.html',
@@ -17,7 +17,15 @@ export class CreateEditContact implements OnInit{
     if(this.id()){
       const contacto = await this.contactsService.getContactById(this.id()!);
       if(contacto) {
-        this.newContactModel.set(contacto)
+        // El back puede devolver null en los campos opcionales
+        this.newContactModel.set({
+          ...contacto,
+          number: contacto.number ?? '',
+          company: contacto.company ?? '',
+          email: contacto.email ?? '',
+          description: contacto.description ?? '',
+        })
+        this.favoritoOriginal = contacto.isFavorite;
       }
     }
   }
@@ -31,15 +39,22 @@ export class CreateEditContact implements OnInit{
     firstName: '',
     lastName: '',
     number: '',
+    company: '',
+    email: '',
+    description: '',
     isFavorite: false,
     groupIds: []
   });
 
+  // Para saber si al editar cambió el favorito
+  favoritoOriginal = false;
+
   id = input<number>();
 
-  // mostrarForm = effect(() => console.log(this.newContactModel()))
-
-  formCreateContact = form(this.newContactModel);
+  formCreateContact = form(this.newContactModel, (schemaPath) => {
+    required(schemaPath.firstName);
+    email(schemaPath.email!);
+  });
 
   onSubmit(event: Event) {
     event.preventDefault();
@@ -50,12 +65,43 @@ export class CreateEditContact implements OnInit{
     } else {
       this.crearContacto()
     }
-    
+
   }
 
-  crearContacto(){
-    const idContactoCreado = this.contactsService.agregarContacto(this.newContactModel());
+  async crearContacto(){
+    const contactoCreado = await this.contactsService.agregarContacto(this.newContactModel());
+    if(!contactoCreado) {
+      this.mostrarToast("error", "No se pudo crear el contacto");
+      return;
+    }
 
+    // El back siempre crea los contactos como no favoritos
+    if(this.newContactModel().isFavorite) {
+      await this.contactsService.toggleFavorite(contactoCreado.id);
+    }
+
+    this.mostrarToast("success", "Contacto creado");
+    this.router.navigate(['/contacts', contactoCreado.id])
+  }
+
+  async editarContacto(){
+    const contacto = this.newContactModel();
+
+    if(contacto.isFavorite !== this.favoritoOriginal) {
+      await this.contactsService.toggleFavorite(contacto.id);
+    }
+
+    const editado = await this.contactsService.editContact(contacto);
+    if(!editado) {
+      this.mostrarToast("error", "No se pudo editar el contacto");
+      return;
+    }
+
+    this.mostrarToast("success", "Contacto editado");
+    this.router.navigate(['/contacts', contacto.id])
+  }
+
+  mostrarToast(icon: SweetAlertIcon, title: string){
     Swal.mixin({
       toast: true,
       position: "top-end",
@@ -67,34 +113,7 @@ export class CreateEditContact implements OnInit{
         toast.onmouseenter = Swal.stopTimer;
         toast.onmouseleave = Swal.resumeTimer;
       }
-    }).fire({
-      icon: "success",
-      title: "Contacto creado"
-    });
-
-    this.router.navigate(['/contacts',idContactoCreado])
-  }
-
-  editarContacto(){
-    this.contactsService.editContact(this.newContactModel())
-
-    Swal.mixin({
-      toast: true,
-      position: "top-end",
-      showConfirmButton: false,
-      timer: 2000,
-      theme: 'dark',
-      timerProgressBar: false,
-      didOpen: (toast) => {
-        toast.onmouseenter = Swal.stopTimer;
-        toast.onmouseleave = Swal.resumeTimer;
-      }
-    }).fire({
-      icon: "success",
-      title: "Contacto editado"
-    });
-
-    this.router.navigate(['/contacts',this.newContactModel().id])
+    }).fire({ icon, title });
   }
 
 }

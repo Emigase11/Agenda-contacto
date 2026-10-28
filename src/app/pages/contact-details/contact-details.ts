@@ -3,6 +3,7 @@ import { ContactsService } from '../../services/contactsService';
 import { Contact } from '../../interfaces/contact';
 import { Router, RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
+import { Auth } from '../../services/auth';
 
 @Component({
   imports: [RouterLink],
@@ -15,10 +16,16 @@ export class ContactDetails implements OnInit {
   id = input.required<number>();
   contacto = signal<Contact | undefined>(undefined);
   contactsService = inject(ContactsService);
+  authService = inject(Auth);
   router = inject(Router)
 
   async ngOnInit() {
     this.contacto.set(await this.contactsService.getContactById(this.id()))
+  }
+
+  async toggleFavorito(id:number){
+    const ok = await this.contactsService.toggleFavorite(id);
+    if(ok) this.contacto.update(c => c ? {...c, isFavorite: !c.isFavorite} : c);
   }
 
   eliminarContacto(id:number){

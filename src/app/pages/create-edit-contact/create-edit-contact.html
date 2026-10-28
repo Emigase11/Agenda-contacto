@@ -1,23 +1,63 @@
-<header>
-  <h1>Mis contactos</h1>
-  <button (click)="authService.logout()">Cerrar sesión</button>
-</header>
-<main>
-    <div class="card">  
-    <form (submit)="onSubmit($event)">
-        <div>
-            <label for="nombre">Nombre</label>
-            <input type="text" [formField]="formCreateContact.firstName" id="nombre" />
-        </div>
-        <div>
-            <label for="apellido">Apellido</label>
-            <input type="text" [formField]="formCreateContact.lastName" id="apellido"/>
-        </div>
-        <div>
-            <label for="telefono">Numero de telefono</label>
-            <input type="text" [formField]="formCreateContact.number!" id="telefono" />
-        </div>
-            <button>{{id() ? 'Editar contacto' : 'Agregar contacto'}}</button>
-    </form>
+<div class="page">
+  <header class="topbar">
+    <div>
+      <a class="btn btn-ghost btn-icon" routerLink="/contacts" aria-label="Volver a mis contactos">←</a>
+      <h1 class="title">{{ id() ? 'Editar contacto' : 'Nuevo contacto' }}</h1>
     </div>
-</main>
+    <button class="btn btn-ghost" (click)="authService.logout()">Cerrar sesión</button>
+  </header>
+  <main>
+    <form class="form" (submit)="onSubmit($event)">
+      <p class="message">
+        {{ id() ? 'Modificá los datos y guardá los cambios.' : 'Completá los datos del nuevo contacto.' }}
+      </p>
+      <div class="flex">
+        <label>
+          <input placeholder=" " type="text" class="input" autocomplete="off"
+            [formField]="formCreateContact.firstName">
+          <span>Nombre *</span>
+        </label>
+        <label>
+          <input placeholder=" " type="text" class="input" autocomplete="off"
+            [formField]="formCreateContact.lastName">
+          <span>Apellido</span>
+        </label>
+      </div>
+      <div class="flex">
+        <label>
+          <input placeholder=" " type="tel" class="input" autocomplete="off"
+            [formField]="formCreateContact.number!">
+          <span>Teléfono</span>
+        </label>
+        <label>
+          <input placeholder=" " type="text" class="input" autocomplete="off"
+            [formField]="formCreateContact.company!">
+          <span>Empresa</span>
+        </label>
+      </div>
+      <label>
+        <input placeholder=" " type="email" class="input" autocomplete="off"
+          [formField]="formCreateContact.email!">
+        <span>Email</span>
+      </label>
+      @if (formCreateContact.email!().invalid()) {
+        <p class="error" role="alert">El email no es válido</p>
+      }
+      <label>
+        <textarea placeholder=" " class="input area" rows="3"
+          [formField]="formCreateContact.description!"></textarea>
+        <span>Descripción</span>
+      </label>
+      <label class="favorito">
+        <input type="checkbox" [formField]="formCreateContact.isFavorite">
+        <span>★ Agregar a favoritos</span>
+      </label>
+      <div class="acciones">
+        <a class="btn btn-ghost" routerLink="/contacts">Cancelar</a>
+        <button class="submit" [disabled]="formCreateContact().invalid()">
+          {{ id() ? 'Guardar cambios' : 'Agregar contacto' }}
+        </button>
+      </div>
+    </form>
+  </main>
+</div>

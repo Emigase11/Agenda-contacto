@@ -1,4 +1,7 @@
 // Basado en el form de Uiverse.io by Yaya12085
+// El .title, el pulse y los botones vienen de _app-ui
+@use "app-ui";
+
 $azul: royalblue;
 $azul-fuerte: rgb(56, 90, 194);
 $gris-texto: #595959;
@@ -23,32 +26,6 @@ section {
   padding: 20px;
   border-radius: 20px;
   position: relative;
-}
-
-.title {
-  font-size: 28px;
-  color: $azul;
-  font-weight: 600;
-  letter-spacing: -1px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  padding-left: 30px;
-
-  &::before,
-  &::after {
-    position: absolute;
-    content: "";
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    left: 0;
-    background-color: $azul;
-  }
-
-  &::after {
-    animation: pulse 1s linear infinite;
-  }
 }
 
 .message,
@@ -157,20 +134,3 @@ section {
   }
 }
 
-@keyframes pulse {
-  from {
-    transform: scale(0.9);
-    opacity: 1;
-  }
-
-  to {
-    transform: scale(1.8);
-    opacity: 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .title::after {
-    animation: none;
-  }
-}

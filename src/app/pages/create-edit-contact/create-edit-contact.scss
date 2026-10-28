@@ -1,9 +1,59 @@
-form{
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    div{
-        display: grid;
-        grid-template-columns: 200px 1fr;
-    }
+// Mismo form que login/register
+@use "../form-card";
+@use "../app-ui" as ui;
+
+.form {
+  max-width: none;
+}
+
+// La descripción es multilínea: el label queda arriba del texto en vez de abajo
+.form label .input.area {
+  min-height: 90px;
+  padding: 24px 10px 10px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.form label .input.area:focus + span,
+.form label .input.area:not(:placeholder-shown) + span {
+  top: 6px;
+}
+
+.form label.favorito {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background-color: ui.$azul-suave;
+  color: ui.$azul-fuerte;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+
+  input {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: ui.$azul;
+    cursor: pointer;
+  }
+
+  &:has(input:focus-visible) {
+    outline: 2px solid ui.$azul-fuerte;
+    outline-offset: 2px;
+  }
+}
+
+.acciones {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+
+  > * {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+  }
 }
