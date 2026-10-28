@@ -1,0 +1,176 @@
+// Basado en el form de Uiverse.io by Yaya12085
+$azul: royalblue;
+$azul-fuerte: rgb(56, 90, 194);
+$gris-texto: #595959;
+$verde: #00792b;
+
+section {
+  min-height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 350px;
+  background-color: #fff;
+  color: #1d1d1d;
+  padding: 20px;
+  border-radius: 20px;
+  position: relative;
+}
+
+.title {
+  font-size: 28px;
+  color: $azul;
+  font-weight: 600;
+  letter-spacing: -1px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+
+  &::before,
+  &::after {
+    position: absolute;
+    content: "";
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    left: 0;
+    background-color: $azul;
+  }
+
+  &::after {
+    animation: pulse 1s linear infinite;
+  }
+}
+
+.message,
+.signin {
+  color: $gris-texto;
+  font-size: 14px;
+}
+
+.signin {
+  text-align: center;
+
+  a {
+    color: $azul;
+    font-weight: bold;
+  }
+
+  a:hover {
+    text-decoration: underline $azul;
+  }
+}
+
+.error {
+  color: #c62828;
+  font-size: 13px;
+}
+
+.flex {
+  display: flex;
+  width: 100%;
+  gap: 6px;
+
+  label {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.form label {
+  position: relative;
+  display: block;
+
+  .input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 10px 20px 10px;
+    outline: 0;
+    border: 1px solid rgba(105, 105, 105, 0.6);
+    border-radius: 10px;
+    font-size: 1rem;
+    color: #1d1d1d;
+    background-color: #fff;
+
+    &:focus-visible {
+      border-color: $azul;
+      box-shadow: 0 0 0 2px rgba(65, 105, 225, 0.35);
+    }
+  }
+
+  .input + span {
+    position: absolute;
+    left: 10px;
+    top: 15px;
+    color: $gris-texto;
+    font-size: 0.9em;
+    cursor: text;
+    transition: 0.3s ease;
+    pointer-events: none;
+  }
+
+  .input:focus + span,
+  .input:not(:placeholder-shown) + span {
+    top: 30px;
+    font-size: 0.7em;
+    font-weight: 600;
+  }
+
+  .input.ok + span {
+    color: $verde;
+  }
+}
+
+.form .submit {
+  border: none;
+  outline: none;
+  background-color: $azul;
+  padding: 10px;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: normal;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: $azul-fuerte;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $azul-fuerte;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    background-color: #8a8a8a;
+    color: #fff;
+    cursor: not-allowed;
+  }
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(0.9);
+    opacity: 1;
+  }
+
+  to {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .title::after {
+    animation: none;
+  }
+}

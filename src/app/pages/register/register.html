@@ -1,25 +1,39 @@
 <section>
-   <div class="card chico">  
-       <h1>Agenda de contactos</h1>
-       <h3>Registrarse</h3>
-       <form (submit)="register($event)">
-           <div>
-            <label for="">Primer Nombre</label>
-               <input type="text" id="" [formField]="formRegister.firstName">
-               <label for="">Apellido</label>
-               <input type="text" id="" [formField]="formRegister.lastName">
-               <label for="">Email</label>
-               <input type="email" id="" [formField]="formRegister.email">
-               <label for="">Password</label>
-               <input type="password" id="" [formField]="formRegister.password">
-            <label for="">Repetir password</label>
-            <input type="password" id="" [formField]="formRegister.password2">
-            @if(formRegister.password2().invalid()){
-                <p>Las contraseñas no son iguales</p>
-            }
-            </div>
-            <button [disabled]="formRegister().invalid()">Registrarse</button>
-        <p>¿Ya tenés cuenta? <a routerLink="/login">Inicia sesión</a></p>
-        </form>
-    </div>
+    <form class="form" (submit)="register($event)">
+        <h1 class="title">Registrarse</h1>
+        <p class="message">Creá tu cuenta y empezá a usar tu agenda de contactos.</p>
+        <div class="flex">
+            <label>
+                <input placeholder=" " type="text" class="input" autocomplete="given-name"
+                    [class.ok]="formRegister.firstName().valid()" [formField]="formRegister.firstName">
+                <span>Nombre</span>
+            </label>
+            <label>
+                <input placeholder=" " type="text" class="input" autocomplete="family-name"
+                    [class.ok]="formRegister.lastName().valid()" [formField]="formRegister.lastName">
+                <span>Apellido</span>
+            </label>
+        </div>
+        <label>
+            <input placeholder=" " type="email" class="input" autocomplete="email"
+                [class.ok]="formRegister.email().valid()" [formField]="formRegister.email">
+            <span>Email</span>
+        </label>
+        <label>
+            <input placeholder=" " type="password" class="input" autocomplete="new-password"
+                [class.ok]="formRegister.password().valid()" [formField]="formRegister.password">
+            <span>Password (mínimo 8 caracteres)</span>
+        </label>
+        <label>
+            <input placeholder=" " type="password" class="input" autocomplete="new-password"
+                [class.ok]="formRegister.password2().valid() && formRegister.password().valid()"
+                [formField]="formRegister.password2">
+            <span>Repetir password</span>
+        </label>
+        @if (formRegister.password2().invalid()) {
+            <p class="error" role="alert">Las contraseñas no son iguales</p>
+        }
+        <button class="submit" [disabled]="formRegister().invalid()">Registrarse</button>
+        <p class="signin">¿Ya tenés cuenta? <a routerLink="/login">Iniciá sesión</a></p>
+    </form>
 </section>

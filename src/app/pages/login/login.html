@@ -1,16 +1,18 @@
 <section>
-   <div class="card">  
-       <h1>Agenda de contactos</h1>
-       <h3>Iniciar sesión</h3>
-       <form (submit)="login($event)">
-           <div>
-               <label for="">Email</label>
-               <input type="email" id="" [formField]="formLogin.email">
-               <label for="">Password</label>
-               <input type="password" id="" [formField]="formLogin.password">
-            </div>
-            <button [disabled]="formLogin().invalid()">Iniciar sesión</button>
-            <p>¿No tenés cuenta? <a routerLink="/register">Registrate</a></p>
-        </form>
-    </div>
+    <form class="form" (submit)="login($event)">
+        <h1 class="title">Iniciar sesión</h1>
+        <p class="message">Ingresá a tu agenda de contactos.</p>
+        <label>
+            <input placeholder=" " type="email" class="input" autocomplete="email"
+                [class.ok]="formLogin.email().valid()" [formField]="formLogin.email">
+            <span>Email</span>
+        </label>
+        <label>
+            <input placeholder=" " type="password" class="input" autocomplete="current-password"
+                [class.ok]="formLogin.password().valid()" [formField]="formLogin.password">
+            <span>Password</span>
+        </label>
+        <button class="submit" [disabled]="formLogin().invalid()">Iniciar sesión</button>
+        <p class="signin">¿No tenés cuenta? <a routerLink="/register">Registrate</a></p>
+    </form>
 </section>
